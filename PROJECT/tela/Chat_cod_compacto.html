@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ChatBot Modal</title>
+    <style>
+      :root {
+        --primary-color: #0f4dc0;
+        --secondary-color: #0cdb39;
+        --button-color-start: #0ed4e2;
+        --button-color-end: #5b88cc;
+        --user-message-color: rgb(30, 230, 136);
+        --bot-message-color: rgb(154, 212, 183);
+        --shadow-color: rgba(0, 0, 0, 0.3);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: Arial, sans-serif;
+        background: linear-gradient(
+          135deg,
+          var(--primary-color),
+          var(--secondary-color)
+        );
+        height: 100vh;
+        margin: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      #openChatBtn {
+        padding: 15px 30px;
+        font-size: 18px;
+        background: linear-gradient(
+          to right,
+          var(--button-color-start),
+          var(--button-color-end)
+        );
+        color: white;
+        border: none;
+        border-radius: 15px;
+        cursor: pointer;
+        transition: transform 0.2s, box-shadow 0.2s ease;
+      }
+
+      #openChatBtn:hover,
+      #openChatBtn:focus {
+        transform: scale(1.05);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.4);
+        outline: none;
+      }
+
+      #chatModal {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
+
+      #chatBox {
+        background: white;
+        width: 90%;
+        max-width: 400px;
+        margin: 50px auto;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 6px 30px var(--shadow-color);
+        position: relative;
+        animation: fadeIn 0.3s ease-in-out;
+        max-height: 90vh;
+        display: flex;
+        flex-direction: column;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      #messages {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        height: 300px;
+        overflow-y: auto;
+        border: 1px solid #ddd;
+        padding: 10px;
+        margin-bottom: 10px;
+        flex-grow: 1;
+      }
+
+      .message {
+        max-width: 85%;
+        margin: 8px 0;
+        padding: 10px 15px;
+        display: inline-block;
+        font-size: 14px;
+        word-wrap: break-word;
+        line-height: 1.4;
+        border-radius: 18px;
+      }
+
+      .user {
+        text-align: right;
+        align-self: flex-end;
+        background-color: var(--user-message-color);
+        color: #000;
+      }
+
+      .bot {
+        text-align: left;
+        align-self: flex-start;
+        background-color: var(--bot-message-color);
+        color: #000;
+      }
+
+      #input-area {
+        display: flex;
+        gap: 5px;
+      }
+
+      #user-input {
+        flex: 1;
+        padding: 10px;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 14px;
+      }
+
+      #user-input:focus {
+        outline: none;
+        border-color: var(--button-color-start);
+      }
+
+      #sendBtn {
+        padding: 10px 15px;
+        background: linear-gradient(
+          to right,
+          var(--button-color-start),
+          var(--button-color-end)
+        );
+        color: white;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        transition: opacity 0.2s;
+      }
+
+      #sendBtn:hover {
+        opacity: 0.9;
+      }
+
+      #closeBtn {
+        position: absolute;
+        top: 10px;
+        right: 15px;
+        background: transparent;
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        color: #555;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+      }
+
+      #closeBtn:hover {
+        background-color: #f0f0f0;
+      }
+
+      .dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        margin: 0 2px;
+        background-color: gray;
+        border-radius: 50%;
+        animation: bounce 1.2s infinite ease-in-out;
+      }
+
+      .dot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+
+      .dot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+
+      @keyframes bounce {
+        0%,
+        80%,
+        100% {
+          transform: scale(0);
+        }
+        40% {
+          transform: scale(1);
+        }
+      }
+
+      #inactivityMessage {
+        display: none;
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background-color: rgb(219, 215, 215);
+        padding: 10px 15px;
+        border-radius: 5px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        max-width: 300px;
+        z-index: 1000;
+      }
+
+      #closeInactivityBtn {
+        margin-left: 10px;
+        background: none;
+        border: none;
+        color: rgb(57, 99, 66);
+        cursor: pointer;
+        font-weight: bold;
+      }
+
+      /* Responsividade */
+      @media (max-width: 480px) {
+        #chatBox {
+          width: 95%;
+          margin: 20px auto;
+          padding: 15px;
+        }
+
+        .message {
+          max-width: 90%;
+          font-size: 13px;
+        }
+
+        #messages {
+          height: 250px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button id="openChatBtn" aria-label="Abrir chat com assistente virtual">
+      Abrir Chat 🤖
+    </button>
+
+    <div
+      id="chatModal"
+      role="dialog"
+      aria-labelledby="chatTitle"
+      aria-modal="true"
+    >
+      <div id="chatBox">
+        <button id="closeBtn" aria-label="Fechar chat" onclick="closeChat()">
+          ×
+        </button>
+        <h2 id="chatTitle">ChatBot</h2>
+
+        <div
+          id="typingIndicator"
+          style="display: none; margin-bottom: 10px"
+          aria-live="polite"
+        >
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span class="dot" aria-hidden="true"></span>
+          <span style="font-size: 12px; color: #666; margin-left: 5px"
+            >Digitando...</span
+          >
+        </div>
+
+        <div id="messages" role="log" aria-live="polite"></div>
+
+        <div id="input-area">
+          <input
+            type="text"
+            id="user-input"
+            placeholder="Digite sua mensagem..."
+            aria-label="Digite sua mensagem"
+          />
+          <button id="sendBtn" onclick="sendMessage()">Enviar</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="inactivityMessage" role="alert">
+      O chat será fechado automaticamente após 5 segundos de inatividade.
+      <button id="closeInactivityBtn" onclick="closeInactivityMessage()">
+        Fechar ×
+      </button>
+    </div>
+
+    <script>
+      // Elementos DOM
+      const modal = document.getElementById("chatModal");
+      const userInput = document.getElementById("user-input");
+      const messagesContainer = document.getElementById("messages");
+      const typingIndicator = document.getElementById("typingIndicator");
+      const inactivityMessage = document.getElementById("inactivityMessage");
+
+      // Variáveis de estado
+      let inactivityTimeout;
+      let chatActive = false;
+
+      // Abrir chat
+      document.getElementById("openChatBtn").onclick = () => {
+        openChat();
+      };
+
+      // Fechar chat ao clicar fora da área do chat
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          closeChat();
+        }
+      });
+
+      function openChat() {
+        modal.style.display = "block";
+        chatActive = true;
+        userInput.focus();
+
+        // Limpar mensagens anteriores
+        messagesContainer.innerHTML = "";
+
+        // Mensagens de boas-vindas
+        addMessage(
+          "Olá! Sou o Caquinho, seu assistente virtual! Como posso ajudar você hoje?",
+          "bot"
+        );
+        addMessage(
+          "Caso não precisar mais da minha ajuda, digite 'sair' para finalizar.",
+          "bot"
+        );
+
+        // Iniciar timer de inatividade
+        startInactivityTimer();
+      }
+
+      function closeChat() {
+        modal.style.display = "none";
+        messagesContainer.innerHTML = "";
+        userInput.value = "";
+        chatActive = false;
+        clearTimeout(inactivityTimeout);
+        closeInactivityMessage();
+      }
+
+      // Timer de inatividade
+      function startInactivityTimer() {
+        clearTimeout(inactivityTimeout);
+        inactivityTimeout = setTimeout(() => {
+          if (chatActive) {
+            showInactivityMessage();
+
+            // Fechar automaticamente após mostrar o aviso
+            setTimeout(() => {
+              if (chatActive) {
+                closeChat();
+              }
+            }, 5000);
+          }
+        }, 30000); // 30 segundos de inatividade
+      }
+
+      function showInactivityMessage() {
+        inactivityMessage.style.display = "block";
+      }
+
+      function closeInactivityMessage() {
+        inactivityMessage.style.display = "none";
+      }
+
+      // Event listeners para interação do usuário
+      userInput.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+          sendMessage();
+        }
+        // Reiniciar timer a cada interação
+        startInactivityTimer();
+      });
+
+      userInput.addEventListener("input", function () {
+        startInactivityTimer();
+      });
+
+      // Enviar mensagem
+      function sendMessage() {
+        const message = userInput.value.trim();
+        if (!message) return;
+
+        addMessage(message, "user");
+        userInput.value = "";
+
+        // Mostrar indicador de digitação
+        typingIndicator.style.display = "block";
+
+        // Simular resposta do bot
+        setTimeout(() => {
+          const reply = generateBotReply(message);
+          typingIndicator.style.display = "none";
+          addMessage(reply, "bot");
+
+          // Verificar se o usuário quer sair
+          if (message.toLowerCase().includes("sair")) {
+            setTimeout(() => {
+              closeChat();
+            }, 2000);
+          }
+        }, 1000 + Math.random() * 1000); // Tempo de resposta variável
+
+        // Reiniciar timer de inatividade
+        startInactivityTimer();
+      }
+
+      // Adicionar mensagem ao chat
+      function addMessage(text, sender) {
+        const messageDiv = document.createElement("div");
+        messageDiv.className = `message ${sender}`;
+        messageDiv.textContent = text;
+        messagesContainer.appendChild(messageDiv);
+        messagesContainer.scrollTop = messagesContainer.scrollHeight;
+      }
+
+      // Gerar resposta do bot
+      function generateBotReply(userMessage) {
+        const lowerMessage = userMessage.toLowerCase();
+
+        if (lowerMessage.includes("ajuda")) {
+          return "Claro! Estou aqui para ajudar. O que você precisa?";
+        }
+        if (lowerMessage.includes("sair")) {
+          return "Até mais! Foi bom conversar com você.";
+        }
+        if (
+          lowerMessage.includes("olá") ||
+          lowerMessage.includes("oi") ||
+          lowerMessage.includes("ola")
+        ) {
+          return "Olá! Como posso ajudá-lo hoje?";
+        }
+        if (lowerMessage.includes("nome")) {
+          return "Meu nome é Caquinho! Sou seu assistente virtual.";
+        }
+        if (
+          lowerMessage.includes("obrigado") ||
+          lowerMessage.includes("obrigada")
+        ) {
+          return "De nada! Estou aqui para ajudar.";
+        }
+
+        return "Desculpe, ainda estou aprendendo a responder isso. Pode reformular sua pergunta?";
+      }
+    </script>
+  </body>
+</html>

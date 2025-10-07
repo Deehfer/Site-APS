@@ -1,0 +1,35 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+    <title>ChatBot Modal</title>
+</head>
+<body>
+    <button id="openChatBtn">Abrir Chat 🤖</button>
+
+    <div id="chatModal">
+        <div id="chatBox">
+            <button id="closeBtn" onclick="closeChat()">×</button>
+            <h2>ChatBot</h2>
+
+            <div id="typingIndicator" style="display: none; margin-bottom: 10px;">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+            <div id="messages"></div>
+            <div id="input-area">
+                <input type="text" id="user-input" placeholder="Digite sua mensagem..." />
+                <button onclick="sendMessage()">Enviar</button>
+            </div>
+            <div id="inactivityMessage" style="display: none; position: fixed; bottom: 20px; right: 20px; background-color: rgb(219, 215, 215);">
+                O chat será fechado automaticamente após 5 segundos de inatividade.<button onclick="closeInactivityMessage()" style="margin-left: 10px; background: none; border: none; color: rgb(57, 99, 66); cursor: pointer;">Fechar×</button>
+            </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

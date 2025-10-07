@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Tickets Ambientais</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #1e7e34, #2ecc71, #1abc9c);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 500px;
+            background-color: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .header {
+            background-color: #27ae60;
+            color: white;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .header h1 {
+            font-size: 24px;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .form-container {
+            padding: 25px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border 0.3s;
+        }
+
+        .form-control:focus {
+            border-color: #27ae60;
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(39, 174, 96, 0.2);
+        }
+
+        textarea.form-control {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .btn {
+            display: block;
+            width: 100%;
+            padding: 14px;
+            background-color: #27ae60;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn:hover {
+            background-color: #219653;
+        }
+
+        .switch-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .switch-btn {
+            background: none;
+            border: none;
+            color: #27ae60;
+            font-weight: 600;
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 15px;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @media (max-width: 600px) {
+            .container {
+                max-width: 100%;
+            }
+            
+            .header h1 {
+                font-size: 20px;
+            }
+            
+            .form-container {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Tela do Administrador -->
+        <div id="admin-screen">
+            <div class="header">
+                <h1>Cadastro de Administrador</h1>
+                <p>Cadastre-se para gerenciar os tickets ambientais</p>
+            </div>
+            <div class="form-container">
+                <form id="admin-form">
+                    <div class="form-group">
+                        <label for="admin-name">Nome Completo</label>
+                        <input type="text" id="admin-name" class="form-control" placeholder="Digite seu nome completo" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-email">E-mail</label>
+                        <input type="email" id="admin-email" class="form-control" placeholder="Digite seu e-mail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-password">Senha</label>
+                        <input type="password" id="admin-password" class="form-control" placeholder="Crie uma senha segura" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="admin-confirm-password">Confirmar Senha</label>
+                        <input type="password" id="admin-confirm-password" class="form-control" placeholder="Confirme sua senha" required>
+                    </div>
+                    <button type="submit" class="btn">Cadastrar Administrador</button>
+                </form>
+                <div class="switch-container">
+                    <button class="switch-btn" onclick="showUserScreen()">Sou usuário comum</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tela do Usuário Comum -->
+        <div id="user-screen" class="hidden">
+            <div class="header">
+                <h1>Abertura de Ticket Ambiental</h1>
+                <p>Reporte problemas ou sugestões ambientais</p>
+            </div>
+            <div class="form-container">
+                <form id="user-form">
+                    <div class="form-group">
+                        <label for="user-name">Seu Nome</label>
+                        <input type="text" id="user-name" class="form-control" placeholder="Digite seu nome" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="user-email">E-mail</label>
+                        <input type="email" id="user-email" class="form-control" placeholder="Digite seu e-mail" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ticket-type">Tipo de Problema</label>
+                        <select id="ticket-type" class="form-control" required>
+                            <option value="" disabled selected>Selecione o tipo de problema</option>
+                            <option value="poluicao">Poluição do Ar/Água</option>
+                            <option value="desmatamento">Desmatamento</option>
+                            <option value="residuos">Descarte Inadequado de Resíduos</option>
+                            <option value="fauna">Problemas com a Fauna</option>
+                            <option value="outro">Outro</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ticket-location">Localização</label>
+                        <input type="text" id="ticket-location" class="form-control" placeholder="Onde o problema ocorre?" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="ticket-description">Descrição do Problema</label>
+                        <textarea id="ticket-description" class="form-control" placeholder="Descreva detalhadamente o problema ambiental..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn">Abrir Ticket</button>
+                </form>
+                <div class="switch-container">
+                    <button class="switch-btn" onclick="showAdminScreen()">Sou administrador</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Funções para alternar entre as telas
+        function showAdminScreen() {
+            document.getElementById('admin-screen').classList.remove('hidden');
+            document.getElementById('user-screen').classList.add('hidden');
+        }
+
+        function showUserScreen() {
+            document.getElementById('user-screen').classList.remove('hidden');
+            document.getElementById('admin-screen').classList.add('hidden');
+        }
+
+        // Validação do formulário do administrador
+        document.getElementById('admin-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('admin-password').value;
+            const confirmPassword = document.getElementById('admin-confirm-password').value;
+            
+            if (password !== confirmPassword) {
+                alert('As senhas não coincidem!');
+                return;
+            }
+            
+            alert('Cadastro de administrador realizado com sucesso!');
+            // Aqui normalmente enviaríamos os dados para o servidor
+        });
+
+        // Validação do formulário do usuário
+        document.getElementById('user-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            alert('Ticket ambiental aberto com sucesso!');
+            // Aqui normalmente enviaríamos os dados para o servidor
+        });
+    </script>
+</body>
+</html>

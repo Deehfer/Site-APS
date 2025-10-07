@@ -1,0 +1,586 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>EcoComunidade - Compartilhe Suas Ações Sustentáveis</title>
+    <style>
+      :root {
+        --primary-green: #2e8b57;
+        --light-green: #90ee90;
+        --dark-green: #006400;
+        --earth-brown: #8b4513;
+        --sky-blue: #87ceeb;
+        --white: #ffffff;
+        --light-gray: #f5f5f5;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      }
+
+      body {
+        background-color: var(--light-gray);
+        color: #333;
+        line-height: 1.6;
+      }
+
+      header {
+        background: linear-gradient(
+          135deg,
+          var(--primary-green),
+          var(--dark-green)
+        );
+        color: var(--white);
+        padding: 1rem 0;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      .container {
+        width: 90%;
+        max-width: 1200px;
+        margin: 0 auto;
+      }
+
+      nav {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        font-size: 1.8rem;
+        font-weight: bold;
+        display: flex;
+        align-items: center;
+      }
+
+      .logo i {
+        margin-right: 10px;
+      }
+
+      .nav-links {
+        display: flex;
+        list-style: none;
+      }
+
+      .nav-links li {
+        margin-left: 2rem;
+      }
+
+      .nav-links a {
+        color: var(--white);
+        text-decoration: none;
+        font-weight: 500;
+        transition: opacity 0.3s;
+      }
+
+      .nav-links a:hover {
+        opacity: 0.8;
+      }
+
+      .hero {
+        background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+          url("https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+        background-size: cover;
+        background-position: center;
+        color: var(--white);
+        padding: 5rem 0;
+        text-align: center;
+      }
+
+      .hero h1 {
+        font-size: 3rem;
+        margin-bottom: 1rem;
+      }
+
+      .hero p {
+        font-size: 1.2rem;
+        max-width: 700px;
+        margin: 0 auto 2rem;
+      }
+
+      .btn {
+        display: inline-block;
+        background-color: var(--primary-green);
+        color: var(--white);
+        padding: 0.8rem 1.5rem;
+        border: none;
+        border-radius: 50px;
+        font-size: 1rem;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.3s;
+        text-decoration: none;
+      }
+
+      .btn:hover {
+        background-color: var(--dark-green);
+        transform: translateY(-3px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+      }
+
+      .features {
+        padding: 5rem 0;
+        background-color: var(--white);
+      }
+
+      .section-title {
+        text-align: center;
+        margin-bottom: 3rem;
+        color: var(--dark-green);
+      }
+
+      .features-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .feature-card {
+        background-color: var(--light-gray);
+        border-radius: 10px;
+        padding: 2rem;
+        text-align: center;
+        transition: transform 0.3s;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+      }
+
+      .feature-card:hover {
+        transform: translateY(-10px);
+      }
+
+      .feature-icon {
+        font-size: 3rem;
+        color: var(--primary-green);
+        margin-bottom: 1rem;
+      }
+
+      .feature-card h3 {
+        margin-bottom: 1rem;
+        color: var(--dark-green);
+      }
+
+      .user-input-section {
+        padding: 5rem 0;
+        background-color: var(--light-green);
+        background-image: url("https://images.unsplash.com/photo-1532996122724-e3c354a0b15b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80");
+        background-size: cover;
+        background-blend-mode: overlay;
+      }
+
+      .input-form {
+        background-color: var(--white);
+        border-radius: 10px;
+        padding: 2rem;
+        max-width: 600px;
+        margin: 0 auto;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      }
+
+      .form-group {
+        margin-bottom: 1.5rem;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 0.5rem;
+        font-weight: 500;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 0.8rem;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        font-size: 1rem;
+      }
+
+      textarea.form-control {
+        min-height: 150px;
+        resize: vertical;
+      }
+
+      .community-section {
+        padding: 5rem 0;
+        background-color: var(--white);
+      }
+
+      .posts-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+        gap: 2rem;
+      }
+
+      .post-card {
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s;
+      }
+
+      .post-card:hover {
+        transform: translateY(-5px);
+      }
+
+      .post-image {
+        height: 200px;
+        background-size: cover;
+        background-position: center;
+      }
+
+      .post-content {
+        padding: 1.5rem;
+      }
+
+      .post-meta {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+        font-size: 0.9rem;
+        color: #666;
+      }
+
+      footer {
+        background-color: var(--dark-green);
+        color: var(--white);
+        padding: 3rem 0 1.5rem;
+      }
+
+      .footer-content {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 2rem;
+        margin-bottom: 2rem;
+      }
+
+      .footer-section h3 {
+        margin-bottom: 1.5rem;
+        font-size: 1.2rem;
+      }
+
+      .footer-links {
+        list-style: none;
+      }
+
+      .footer-links li {
+        margin-bottom: 0.8rem;
+      }
+
+      .footer-links a {
+        color: var(--light-green);
+        text-decoration: none;
+        transition: color 0.3s;
+      }
+
+      .footer-links a:hover {
+        color: var(--white);
+      }
+
+      .copyright {
+        text-align: center;
+        padding-top: 1.5rem;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        font-size: 0.9rem;
+      }
+
+      @media (max-width: 768px) {
+        .nav-links {
+          display: none;
+        }
+
+        .hero h1 {
+          font-size: 2rem;
+        }
+
+        .hero p {
+          font-size: 1rem;
+        }
+      }
+    </style>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <header>
+      <div class="container">
+        <nav>
+          <div class="logo">
+            <i class="fas fa-leaf"></i>
+            EcoComunidade
+          </div>
+          <ul class="nav-links">
+            <li><a href="#home">Início</a></li>
+            <li><a href="#features">Como Funciona</a></li>
+            <li><a href="#share">Compartilhar</a></li>
+            <li><a href="#community">Comunidade</a></li>
+            <li><a href="#about">Sobre</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+
+    <section class="hero" id="home">
+      <div class="container">
+        <h1>Juntos Por Um Planeta Mais Verde</h1>
+        <p>
+          Compartilhe suas ações sustentáveis e inspire outras pessoas a fazerem
+          a diferença. Cada pequena ação conta!
+        </p>
+        <a href="#share" class="btn">Compartilhe Sua Ação</a>
+      </div>
+    </section>
+
+    <section class="features" id="features">
+      <div class="container">
+        <h2 class="section-title">Como Funciona</h2>
+        <div class="features-grid">
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-edit"></i>
+            </div>
+            <h3>Compartilhe</h3>
+            <p>
+              Registre suas ações sustentáveis, como reciclagem, redução de
+              consumo ou iniciativas comunitárias.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-users"></i>
+            </div>
+            <h3>Conecte-se</h3>
+            <p>
+              Veja o que outras pessoas estão fazendo e inspire-se com ideias
+              inovadoras para uma vida mais sustentável.
+            </p>
+          </div>
+          <div class="feature-card">
+            <div class="feature-icon">
+              <i class="fas fa-chart-line"></i>
+            </div>
+            <h3>Acompanhe</h3>
+            <p>
+              Monitore o impacto coletivo das ações compartilhadas e veja como
+              pequenas mudanças criam grandes resultados.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="user-input-section" id="share">
+      <div class="container">
+        <h2 class="section-title">Compartilhe Sua Ação Sustentável</h2>
+        <div class="input-form">
+          <form id="sustainability-form">
+            <div class="form-group">
+              <label for="action-title">Título da Ação</label>
+              <input
+                type="text"
+                id="action-title"
+                class="form-control"
+                placeholder="Ex: Instalação de painéis solares em casa"
+              />
+            </div>
+            <div class="form-group">
+              <label for="action-category">Categoria</label>
+              <select id="action-category" class="form-control">
+                <option value="">Selecione uma categoria</option>
+                <option value="reciclagem">Reciclagem</option>
+                <option value="energia">Energia Renovável</option>
+                <option value="agua">Economia de Água</option>
+                <option value="transporte">Transporte Sustentável</option>
+                <option value="alimentacao">Alimentação Consciente</option>
+                <option value="consumo">Redução de Consumo</option>
+                <option value="outro">Outro</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="action-description">Descrição da Ação</label>
+              <textarea
+                id="action-description"
+                class="form-control"
+                placeholder="Descreva sua ação sustentável em detalhes..."
+              ></textarea>
+            </div>
+            <div class="form-group">
+              <label for="action-location">Localização (opcional)</label>
+              <input
+                type="text"
+                id="action-location"
+                class="form-control"
+                placeholder="Cidade, Estado"
+              />
+            </div>
+            <div class="form-group">
+              <label for="action-image">Imagem (URL)</label>
+              <input
+                type="text"
+                id="action-image"
+                class="form-control"
+                placeholder="Cole a URL de uma imagem relacionada"
+              />
+            </div>
+            <button type="submit" class="btn">Compartilhar Ação</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <section class="community-section" id="community">
+      <div class="container">
+        <h2 class="section-title">Ações da Comunidade</h2>
+        <div class="posts-grid" id="posts-container">
+          <!-- As postagens serão inseridas aqui via JavaScript -->
+        </div>
+      </div>
+    </section>
+
+    <footer id="about">
+      <div class="container">
+        <div class="footer-content">
+          <div class="footer-section">
+            <h3>EcoComunidade</h3>
+            <p>
+              Uma plataforma para compartilhar e inspirar ações sustentáveis que
+              fazem a diferença no nosso planeta.
+            </p>
+          </div>
+          <div class="footer-section">
+            <h3>Links Rápidos</h3>
+            <ul class="footer-links">
+              <li><a href="#home">Início</a></li>
+              <li><a href="#features">Como Funciona</a></li>
+              <li><a href="#share">Compartilhar</a></li>
+              <li><a href="#community">Comunidade</a></li>
+            </ul>
+          </div>
+          <div class="footer-section">
+            <h3>Contato</h3>
+            <ul class="footer-links">
+              <li><i class="fas fa-envelope"></i> contato@ecocomunidade.com</li>
+              <li><i class="fas fa-phone"></i> (11) 99999-9999</li>
+              <li><i class="fas fa-map-marker-alt"></i> São Paulo, Brasil</li>
+            </ul>
+          </div>
+        </div>
+        <div class="copyright">
+          <p>&copy; 2023 EcoComunidade. Todos os direitos reservados.</p>
+        </div>
+      </div>
+    </footer>
+
+    <script>
+      // Dados de exemplo para as postagens
+      const samplePosts = [
+        {
+          title: "Horta Comunitária no Bairro",
+          category: "Alimentação",
+          description:
+            "Organizamos uma horta comunitária onde vizinhos cultivam alimentos orgânicos juntos. Já colhemos mais de 50kg de verduras e legumes!",
+          location: "Curitiba, PR",
+          image:
+            "https://images.unsplash.com/photo-1591871937571-6d865bc5f127?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+          date: "15/10/2023",
+        },
+        {
+          title: "Instalação de Painéis Solares",
+          category: "Energia Renovável",
+          description:
+            "Finalmente instalei painéis solares em casa. Espero reduzir minha conta de energia em 80% e minha pegada de carbono significativamente.",
+          location: "Belo Horizonte, MG",
+          image:
+            "https://images.unsplash.com/photo-1509391366360-2e959784a276?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+          date: "10/10/2023",
+        },
+        {
+          title: "Projeto de Compostagem na Escola",
+          category: "Reciclagem",
+          description:
+            "Implementamos um sistema de compostagem na escola dos meus filhos. Agora transformamos resíduos orgânicos em adubo para o jardim.",
+          location: "Florianópolis, SC",
+          image:
+            "https://images.unsplash.com/photo-1589923188651-268a35c0d0bf?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+          date: "05/10/2023",
+        },
+      ];
+
+      // Função para renderizar as postagens
+      function renderPosts() {
+        const postsContainer = document.getElementById("posts-container");
+        postsContainer.innerHTML = "";
+
+        samplePosts.forEach((post) => {
+          const postElement = document.createElement("div");
+          postElement.className = "post-card";
+          postElement.innerHTML = `
+                    <div class="post-image" style="background-image: url('${post.image}')"></div>
+                    <div class="post-content">
+                        <h3>${post.title}</h3>
+                        <div class="post-meta">
+                            <span><i class="fas fa-tag"></i> ${post.category}</span>
+                            <span><i class="fas fa-calendar"></i> ${post.date}</span>
+                        </div>
+                        <p>${post.description}</p>
+                        <p><i class="fas fa-map-marker-alt"></i> ${post.location}</p>
+                    </div>
+                `;
+          postsContainer.appendChild(postElement);
+        });
+      }
+
+      // Função para adicionar nova postagem
+      document
+        .getElementById("sustainability-form")
+        .addEventListener("submit", function (e) {
+          e.preventDefault();
+
+          const title = document.getElementById("action-title").value;
+          const category = document.getElementById("action-category").value;
+          const description =
+            document.getElementById("action-description").value;
+          const location = document.getElementById("action-location").value;
+          const image = document.getElementById("action-image").value;
+
+          if (title && category && description) {
+            const newPost = {
+              title,
+              category,
+              description,
+              location: location || "Local não informado",
+              image:
+                image ||
+                "https://images.unsplash.com/photo-1542601906990-b4d3fb778b09?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80",
+              date: new Date().toLocaleDateString("pt-BR"),
+            };
+
+            samplePosts.unshift(newPost);
+            renderPosts();
+
+            // Limpar o formulário
+            this.reset();
+
+            // Mostrar mensagem de sucesso
+            alert(
+              "Sua ação foi compartilhada com sucesso! Obrigado por contribuir para um planeta mais sustentável."
+            );
+          } else {
+            alert(
+              "Por favor, preencha pelo menos o título, categoria e descrição da ação."
+            );
+          }
+        });
+
+      // Inicializar a página
+      document.addEventListener("DOMContentLoaded", function () {
+        renderPosts();
+      });
+    </script>
+  </body>
+</html>
